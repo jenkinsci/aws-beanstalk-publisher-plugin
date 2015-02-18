@@ -24,40 +24,40 @@ import com.amazonaws.services.elasticbeanstalk.model.DescribeEnvironmentsResult;
 import com.amazonaws.services.elasticbeanstalk.model.EnvironmentDescription;
 
 public class AWSEBEnvironmentUpdater {
-    
+
     private final static int MAX_THREAD_COUNT = 5;
-    
+
     private final AbstractBuild<?, ?> build;
     private final BuildListener listener;
     private final PrintStream log;
     private final AWSEBElasticBeanstalkSetup envSetup;
-    
+
     private final List<String> environments;
     private final String applicationName;
     private final String versionLabel;
     private final AWSElasticBeanstalk awseb;
     private final boolean failOnError;
-    
-    
-    public AWSEBEnvironmentUpdater(AbstractBuild<?, ?> build, Launcher launcher, 
+
+
+    public AWSEBEnvironmentUpdater(AbstractBuild<?, ?> build, Launcher launcher,
             BuildListener listener, AWSEBElasticBeanstalkSetup envSetup){
         this.build = build;
         this.listener = listener;
         this.log = listener.getLogger();
         this.envSetup = envSetup;
-        
+
         environments = AWSEBUtils.getValue(build, envSetup.getEnvironments());
         applicationName = AWSEBUtils.getValue(build, envSetup.getApplicationName());
         versionLabel = AWSEBUtils.getValue(build, envSetup.getVersionLabelFormat());
         failOnError = envSetup.getFailOnError();
-        
+
 
         AWSCredentialsProvider provider = envSetup.getCredentials().getAwsCredentials();
         Region region = Region.getRegion(envSetup.getAwsRegion());
-        
+
         awseb = AWSEBUtils.getElasticBeanstalk(provider, region);
     }
-    
+
     public void perform() throws Exception{
         for (AWSEBSetup extension : envSetup.getExtensions()) {
             if (extension instanceof AWSEBS3Setup){
@@ -66,15 +66,15 @@ public class AWSEBEnvironmentUpdater {
                 uploader.uploadArchive(awseb);
             }
         }
-        
+
         updateEnvironments();
     }
-    
+
     public void updateEnvironments() {
         DescribeEnvironmentsRequest request = new DescribeEnvironmentsRequest();
         request.setApplicationName(applicationName);
         request.setIncludeDeleted(false);
-        
+
         if (environments != null && !environments.isEmpty()) {
             request.setEnvironmentNames(environments);
         }
@@ -91,9 +91,9 @@ public class AWSEBEnvironmentUpdater {
         List<EnvironmentDescription> envList = result.getEnvironments();
 
         if (envList.size() <= 0) {
-            AWSEBUtils.log(log, "No environments found matching applicationName:%s with environments:%s", 
+            AWSEBUtils.log(log, "No environments found matching applicationName:%s with environments:%s",
                     applicationName, environments);
-            listener.finished(Result.SUCCESS);
+            listener.finished(Result.FAILURE);
             return;
         }
 
@@ -102,7 +102,7 @@ public class AWSEBEnvironmentUpdater {
         List<AWSEBEnvironmentUpdaterThread> updaters = new ArrayList<AWSEBEnvironmentUpdaterThread>();
         for (EnvironmentDescription envd : envList) {
             AWSEBUtils.log(log, "Environment found (environment id='%s', name='%s'). "
-                    + "Attempting to update environment to version label '%s'", 
+                    + "Attempting to update environment to version label '%s'",
                     envd.getEnvironmentId(), envd.getEnvironmentName(), versionLabel);
             updaters.add(new AWSEBEnvironmentUpdaterThread(awseb, request, envd, log, versionLabel));
         }
