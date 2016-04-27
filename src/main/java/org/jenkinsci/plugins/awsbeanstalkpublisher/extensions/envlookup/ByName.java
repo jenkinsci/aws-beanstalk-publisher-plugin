@@ -16,6 +16,7 @@ import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBSetupDescript
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
+import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.elasticbeanstalk.AWSElasticBeanstalk;
 import com.amazonaws.services.elasticbeanstalk.model.DescribeEnvironmentsRequest;
@@ -90,7 +91,11 @@ public class ByName extends AWSEBSetup implements EnvLookup {
         
 
         private String getEnvironmentsListAsString(AWSEBCredentials credentials, Regions region, String appName) {
-            List<EnvironmentDescription> environments = AWSEBUtils.getEnvironments(credentials.getAwsCredentials(), region, appName);
+            AWSCredentialsProvider awsCredentials = null;
+            if (credentials != null) {
+                awsCredentials = credentials.getAwsCredentials();
+            }
+            List<EnvironmentDescription> environments = AWSEBUtils.getEnvironments(awsCredentials, region, appName);
             StringBuilder sb = new StringBuilder();
             for (EnvironmentDescription env : environments) {
                 sb.append(env.getEnvironmentName());

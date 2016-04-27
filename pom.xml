@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>1.509.4</version>
+        <version>1.596.1</version>
     </parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>aws-beanstalk-publisher-plugin</artifactId>
@@ -90,7 +90,7 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.10.49</version>
+            <version>1.10.73</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-codec</groupId>
@@ -100,7 +100,7 @@
         </dependency><dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-elasticbeanstalk</artifactId>
-            <version>1.10.49</version>
+            <version>1.10.73</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-codec</groupId>
