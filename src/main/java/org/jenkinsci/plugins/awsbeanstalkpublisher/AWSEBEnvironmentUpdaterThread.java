@@ -218,7 +218,7 @@ public class AWSEBEnvironmentUpdaterThread implements Callable<AWSEBEnvironmentU
                 try {
                     log("'%s': Pausing update for %d seconds", envd.getEnvironmentName(), WAIT_TIME_SECONDS);
                     Thread.sleep(WAIT_TIME_MILLISECONDS);
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     e.printStackTrace(listener.getLogger());
                 }
             }
