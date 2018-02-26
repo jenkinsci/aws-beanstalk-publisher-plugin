@@ -78,7 +78,7 @@ public class AWSEBCredentials extends AbstractDescribableImpl<AWSEBCredentials> 
         Set<AWSEBCredentials> credentials = getCredentials();
 
         for (AWSEBCredentials credential : credentials) {
-            if (credential.toString().equals(credentialsString)) {
+            if (credential.getName().equals(credentialsString)) {
                 return credential;
             }
         }
