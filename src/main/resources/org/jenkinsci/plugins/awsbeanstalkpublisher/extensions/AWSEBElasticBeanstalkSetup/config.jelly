@@ -38,6 +38,10 @@
   <f:entry title="Version Label Format" field="versionLabelFormat">
     <f:textbox />
   </f:entry>
+
+  <f:entry title="Version Description Format" field="versionDescriptionFormat">
+    <f:textbox />
+  </f:entry>
   
   <f:entry title="Fail if any failures" field="failOnError">
     <f:checkbox />

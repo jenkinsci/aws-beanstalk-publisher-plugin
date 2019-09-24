@@ -1,5 +1,6 @@
 package org.jenkinsci.plugins.awsbeanstalkpublisher.extensions;
 
+import com.amazonaws.regions.Regions;
 import hudson.Extension;
 import hudson.Launcher;
 import hudson.Util;
@@ -9,10 +10,6 @@ import hudson.model.Saveable;
 import hudson.util.DescribableList;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.util.CollectionUtils;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.AWSEBCredentials;
@@ -23,19 +20,21 @@ import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.envlookup.ByUrl;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
-import com.amazonaws.regions.Regions;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
 
     @Extension
     public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
 
-    
+
     private String credentialsString;
     private String credentialsText;
     private Regions awsRegion;
     private String applicationName;
     private String versionLabelFormat;
+    private String versionDescriptionFormat;
     private Boolean failOnError;
 
     @Deprecated
@@ -50,16 +49,17 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
 
     @DataBoundConstructor
     public AWSEBElasticBeanstalkSetup(
-            Regions awsRegion, 
-            String awsRegionText, 
+            Regions awsRegion,
+            String awsRegionText,
             String credentialsString,
             String credentialsText,
-            String applicationName, 
-            String versionLabelFormat, 
+            String applicationName,
+            String versionLabelFormat,
+            String versionDescriptionFormat,
             Boolean failOnError,
             List<AWSEBSetup> extensions,
             List<AWSEBSetup> envLookup) {
-        
+
         this.awsRegion = awsRegion;
         this.awsRegionText = awsRegionText;
         this.credentialsString = credentialsString;
@@ -67,11 +67,12 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
         this.applicationName = applicationName;
 
         this.versionLabelFormat = versionLabelFormat;
+        this.versionDescriptionFormat = versionDescriptionFormat;
         this.failOnError = failOnError;
         this.extensions = new DescribableList<AWSEBSetup, AWSEBSetupDescriptor>(Saveable.NOOP, Util.fixNull(extensions));
-        
+
         this.envLookup = new DescribableList<AWSEBSetup, AWSEBSetupDescriptor>(Saveable.NOOP, Util.fixNull(envLookup));
-        if (this.envLookup.size() == 0){
+        if (this.envLookup.size() == 0) {
             this.envLookup.add(new ByName(""));
         }
     }
@@ -89,7 +90,7 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
         }
         return envLookup;
     }
-    
+
     public Object readResolve() {
         if (environments != null && !environments.isEmpty()) {
             addEnvIfMissing(new ByName(StringUtils.join(environments, '\n')));
@@ -101,7 +102,7 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
         }
         return this;
     }
-    
+
     protected void addEnvIfMissing(AWSEBSetup ext) {
         if (getEnvLookup().get(ext.getClass()) == null) {
             getEnvLookup().add(ext);
@@ -122,7 +123,8 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
         String regionName = AWSEBUtils.getValue(build, listener, awsRegionText);
         try {
             return Regions.fromName(regionName);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return getAwsRegion();
         }
     }
@@ -139,6 +141,10 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
         return versionLabelFormat == null ? "" : versionLabelFormat;
     }
 
+    public String getVersionDescriptionFormat() {
+        return versionDescriptionFormat == null ? "" : versionDescriptionFormat;
+    }
+
     public Boolean getFailOnError() {
         return failOnError == null ? false : failOnError;
     }
@@ -146,25 +152,26 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
     public String getCredentialsString() {
         return credentialsString;
     }
-    
+
     public String getCredentialsText() {
         return credentialsText;
     }
-    
+
     public AWSEBCredentials getActualcredentials(AbstractBuild<?, ?> build, BuildListener listener) {
         AWSEBCredentials creds = null;
-                
+
         if (!StringUtils.isEmpty(credentialsText)) {
             String resolvedText = AWSEBUtils.replaceMacros(build, listener, credentialsText);
             creds = AWSEBCredentials.getCredentialsByString(resolvedText);
-        } else if (!StringUtils.isEmpty(credentialsString)) {
+        }
+        else if (!StringUtils.isEmpty(credentialsString)) {
             creds = AWSEBCredentials.getCredentialsByString(credentialsString);
         }
-        
+
         if (creds == null) {
             listener.getLogger().println("No credentials provided for build!!!");
         }
-        
+
         return creds;
     }
 
@@ -211,12 +218,13 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
             List<String> badEnv = AWSEBUtils.getBadEnvironmentNames(environmentList);
             if (badEnv.size() > 0) {
                 return FormValidation.error("Bad environment names: %s", badEnv.toString());
-            } else {
+            }
+            else {
                 return FormValidation.ok();
             }
 
         }
-        
+
         public FormValidation doLookupAvailableCredentials() {
             List<String> creds = new ArrayList<String>(10);
             for (AWSEBCredentials next : AWSEBCredentials.getCredentials()) {
@@ -226,9 +234,9 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
         }
 
         public FormValidation doLoadApplications(
-                @QueryParameter("credentialsString") String credentialsString, 
-                @QueryParameter("credentialsText") String credentialsText, 
-                @QueryParameter("awsRegion") String awsRegion, 
+                @QueryParameter("credentialsString") String credentialsString,
+                @QueryParameter("credentialsText") String credentialsText,
+                @QueryParameter("awsRegion") String awsRegion,
                 @QueryParameter("awsRegionText") String awsRegionText) {
             AWSEBCredentials credentials = AWSEBCredentials.getCredentialsByString(credentialsString);
             if (credentials == null) {
@@ -250,7 +258,7 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
             extensions.add(AWSEBS3Setup.DESCRIPTOR);
             return extensions;
         }
-        
+
         public List<AWSEBSetup> getEnvLookup(List<AWSEBSetup> envLookup) {
             if (envLookup != null && envLookup.size() > 0) {
                 return envLookup;
@@ -259,7 +267,7 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
             lookup.add(new ByName(""));
             return lookup;
         }
-        
+
         public List<AWSEBSetupDescriptor> getEnvironmentLookupDescriptors() {
             List<AWSEBSetupDescriptor> envLookup = new ArrayList<AWSEBSetupDescriptor>(3);
             envLookup.add(new ByName.DescriptorImpl());
