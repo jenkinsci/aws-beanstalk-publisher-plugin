@@ -46,7 +46,7 @@ public abstract class AWSEBBuilderBackwardsCompatibility extends Builder impleme
                 envLookup.add(byName);
                 addIfMissing(new AWSEBElasticBeanstalkSetup(awsRegion, "", credentialsName, "",
                         applicationName,
-                        versionLabelFormat, failOnError, s3Setup, envLookup));
+                        versionLabelFormat, "", failOnError, s3Setup, envLookup));
             }
 
         } catch (IOException e) {

@@ -35,6 +35,7 @@ public class AWSEBS3Uploader {
     
     private final String applicationName;
     private final String versionLabel;
+    private final String versionDescription;
     private final Regions awsRegion;
     private final AbstractBuild<?, ?> build;
     private final BuildListener listener;
@@ -47,13 +48,14 @@ public class AWSEBS3Uploader {
 
     public AWSEBS3Uploader(AbstractBuild<?, ?> build, BuildListener listener, Regions awsRegion,
             AWSEBCredentials credentials, AWSEBS3Setup s3Setup,
-            String applicationName, String versionLabel) {
+            String applicationName, String versionLabel, String versionDescription) {
         this.credentials = credentials;
         this.build = build;
         this.awsRegion = awsRegion;
         this.listener = listener;
         this.applicationName = AWSEBUtils.getValue(build, listener, applicationName);
         this.versionLabel = AWSEBUtils.getValue(build, listener, versionLabel);
+        this.versionDescription = AWSEBUtils.getValue(build, listener, versionDescription);
         this.keyPrefix = AWSEBUtils.getValue(build, listener, s3Setup.getKeyPrefix());
         this.bucketName = AWSEBUtils.getValue(build, listener, s3Setup.getBucketName());
         this.bucketRegion = AWSEBUtils.getValue(build, listener, s3Setup.getBucketRegion());
@@ -66,7 +68,7 @@ public class AWSEBS3Uploader {
 
 
     public AWSEBS3Uploader(AbstractBuild<?, ?> build, BuildListener listener, AWSEBElasticBeanstalkSetup envSetup, AWSEBS3Setup s3) {
-        this(build, listener, envSetup.getAwsRegion(build, listener), envSetup.getActualcredentials(build, listener), s3, envSetup.getApplicationName(), envSetup.getVersionLabelFormat());
+        this(build, listener, envSetup.getAwsRegion(build, listener), envSetup.getActualcredentials(build, listener), s3, envSetup.getApplicationName(), envSetup.getVersionLabelFormat(), envSetup.getVersionDescriptionFormat());
     }
 
 
@@ -158,8 +160,12 @@ public class AWSEBS3Uploader {
     private void createApplicationVersion(AWSElasticBeanstalk awseb) {
         AWSEBUtils.log(listener, "Creating application version %s for application %s for path %s", versionLabel, applicationName, s3ObjectPath);
 
-        CreateApplicationVersionRequest cavRequest = new CreateApplicationVersionRequest().withApplicationName(applicationName).withAutoCreateApplication(true)
-                .withSourceBundle(new S3Location(bucketName, objectKey)).withVersionLabel(versionLabel);
+        CreateApplicationVersionRequest cavRequest = new CreateApplicationVersionRequest()
+                .withApplicationName(applicationName)
+                .withAutoCreateApplication(true)
+                .withSourceBundle(new S3Location(bucketName, objectKey))
+                .withVersionLabel(versionLabel)
+                .withDescription(versionDescription);
 
         awseb.createApplicationVersion(cavRequest);
     }

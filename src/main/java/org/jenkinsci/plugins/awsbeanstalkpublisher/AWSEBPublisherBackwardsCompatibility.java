@@ -44,7 +44,7 @@ public abstract class AWSEBPublisherBackwardsCompatibility  extends Recorder {
                 envLookup.add(byName);
                 addIfMissing(new AWSEBElasticBeanstalkSetup(awsRegion, "", credentialsName, "",
                         applicationName,
-                        versionLabelFormat, failOnError, s3Setup, envLookup));
+                        versionLabelFormat, "", failOnError, s3Setup, envLookup));
             }
 
         } catch (IOException e) {
