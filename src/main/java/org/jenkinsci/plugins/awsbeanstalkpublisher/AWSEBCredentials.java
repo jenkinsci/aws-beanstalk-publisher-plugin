@@ -22,7 +22,7 @@ import hudson.model.ModelObject;
 import hudson.util.FormValidation;
 
 public class AWSEBCredentials extends AbstractDescribableImpl<AWSEBCredentials> implements ModelObject {
-    
+
     @Extension
     public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
 
@@ -43,7 +43,7 @@ public class AWSEBCredentials extends AbstractDescribableImpl<AWSEBCredentials> 
     public String getAwsSecretSharedKey() {
         return awsSecretSharedKey;
     }
-    
+
 
     public Regions getAwsRegion() {
         return Regions.DEFAULT_REGION;
@@ -78,7 +78,7 @@ public class AWSEBCredentials extends AbstractDescribableImpl<AWSEBCredentials> 
         Set<AWSEBCredentials> credentials = getCredentials();
 
         for (AWSEBCredentials credential : credentials) {
-            if (credential.getName().equals(credentialsString)) {
+            if (credential.getName().equals(credentialsString) || credential.toString().equals(credentialsString)) {
                 return credential;
             }
         }
@@ -106,12 +106,12 @@ public class AWSEBCredentials extends AbstractDescribableImpl<AWSEBCredentials> 
     public int hashCode() {
         return (awsAccessKeyId).hashCode();
     }
-    
+
     @Override
     public DescriptorImpl getDescriptor() {
         return DESCRIPTOR;
     }
-    
+
 
     public final static class DescriptorImpl extends Descriptor<AWSEBCredentials> {
 
@@ -119,7 +119,7 @@ public class AWSEBCredentials extends AbstractDescribableImpl<AWSEBCredentials> 
         public String getDisplayName() {
             return "Credentials for Amazon Web Service";
         }
-        
+
         public FormValidation doLoadApplications(@QueryParameter("awsAccessKeyId") String accessKey, @QueryParameter("awsSecretSharedKey") String secretKey, @QueryParameter("awsRegion") String regionString) {
             if (accessKey == null || secretKey == null) {
                 return FormValidation.error("Access key and Secret key cannot be empty");
@@ -129,10 +129,10 @@ public class AWSEBCredentials extends AbstractDescribableImpl<AWSEBCredentials> 
             if (region == null) {
                 return FormValidation.error("Missing valid Region");
             }
-            
+
             List<ApplicationDescription> apps = AWSEBUtils.getApplications(credentials.getAwsCredentials(), region);
-            
-            
+
+
             StringBuilder sb = new StringBuilder();
             for (ApplicationDescription app : apps) {
                 sb.append(app.getApplicationName());
@@ -140,6 +140,6 @@ public class AWSEBCredentials extends AbstractDescribableImpl<AWSEBCredentials> 
             }
             return FormValidation.ok(sb.toString());
         }
-        
+
     }
 }
