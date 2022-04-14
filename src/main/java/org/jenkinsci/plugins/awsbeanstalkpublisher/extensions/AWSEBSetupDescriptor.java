@@ -10,6 +10,6 @@ public abstract class AWSEBSetupDescriptor extends Descriptor<AWSEBSetup> {
     }
 
     public static DescriptorExtensionList<AWSEBSetup,AWSEBSetupDescriptor> all() {
-        return Jenkins.getInstance().getDescriptorList(AWSEBSetup.class);
+        return Jenkins.get().getDescriptorList(AWSEBSetup.class);
     }
 }

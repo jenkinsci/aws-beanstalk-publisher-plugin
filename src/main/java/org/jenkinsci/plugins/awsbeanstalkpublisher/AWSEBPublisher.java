@@ -19,18 +19,13 @@ import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
 import hudson.util.DescribableList;
-import hudson.util.FormValidation;
 import net.sf.json.JSONObject;
 
 import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBElasticBeanstalkSetup;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBSetup;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBSetupDescriptor;
 import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
-
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.elasticbeanstalk.model.ApplicationDescription;
 
 /**
  * AWS Elastic Beanstalk Deployment
@@ -46,7 +41,7 @@ public class AWSEBPublisher extends AWSEBPublisherBackwardsCompatibility {
     public AWSEBPublisher(
             List<AWSEBElasticBeanstalkSetup> extensions) {
         super();
-        this.extensions = new DescribableList<AWSEBSetup, AWSEBSetupDescriptor>(
+        this.extensions = new DescribableList<>(
                 Saveable.NOOP,Util.fixNull(extensions));
     }
     
@@ -54,7 +49,7 @@ public class AWSEBPublisher extends AWSEBPublisherBackwardsCompatibility {
     
     public DescribableList<AWSEBSetup, AWSEBSetupDescriptor> getExtensions() {
         if (extensions == null) {
-            extensions = new DescribableList<AWSEBSetup, AWSEBSetupDescriptor>(Saveable.NOOP,Util.fixNull(extensions));
+            extensions = new DescribableList<>(Saveable.NOOP,Util.fixNull(extensions));
         }
         return extensions;
     }
@@ -105,7 +100,7 @@ public class AWSEBPublisher extends AWSEBPublisherBackwardsCompatibility {
 
         
         public List<AWSEBSetupDescriptor> getExtensionDescriptors() {
-            List<AWSEBSetupDescriptor> extensions = new ArrayList<AWSEBSetupDescriptor>(1);
+            List<AWSEBSetupDescriptor> extensions = new ArrayList<>(1);
             extensions.add(AWSEBElasticBeanstalkSetup.getDesc());
             return extensions;
         }

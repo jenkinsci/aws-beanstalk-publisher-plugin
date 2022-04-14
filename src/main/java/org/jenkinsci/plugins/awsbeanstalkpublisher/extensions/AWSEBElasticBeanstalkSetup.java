@@ -11,7 +11,6 @@ import hudson.util.DescribableList;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tools.ant.util.CollectionUtils;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.AWSEBCredentials;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.AWSEBEnvironmentUpdater;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.AWSEBUtils;
@@ -69,9 +68,9 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
         this.versionLabelFormat = versionLabelFormat;
         this.versionDescriptionFormat = versionDescriptionFormat;
         this.failOnError = failOnError;
-        this.extensions = new DescribableList<AWSEBSetup, AWSEBSetupDescriptor>(Saveable.NOOP, Util.fixNull(extensions));
+        this.extensions = new DescribableList<>(Saveable.NOOP, Util.fixNull(extensions));
 
-        this.envLookup = new DescribableList<AWSEBSetup, AWSEBSetupDescriptor>(Saveable.NOOP, Util.fixNull(envLookup));
+        this.envLookup = new DescribableList<>(Saveable.NOOP, Util.fixNull(envLookup));
         if (this.envLookup.size() == 0) {
             this.envLookup.add(new ByName(""));
         }
@@ -79,14 +78,14 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
 
     public DescribableList<AWSEBSetup, AWSEBSetupDescriptor> getExtensions() {
         if (extensions == null) {
-            extensions = new DescribableList<AWSEBSetup, AWSEBSetupDescriptor>(Saveable.NOOP, Util.fixNull(extensions));
+            extensions = new DescribableList<>(Saveable.NOOP, Util.fixNull(extensions));
         }
         return extensions;
     }
 
     public DescribableList<AWSEBSetup, AWSEBSetupDescriptor> getEnvLookup() {
         if (envLookup == null) {
-            envLookup = new DescribableList<AWSEBSetup, AWSEBSetupDescriptor>(Saveable.NOOP, Util.fixNull(envLookup));
+            envLookup = new DescribableList<>(Saveable.NOOP, Util.fixNull(envLookup));
         }
         return envLookup;
     }
@@ -226,11 +225,11 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
         }
 
         public FormValidation doLookupAvailableCredentials() {
-            List<String> creds = new ArrayList<String>(10);
+            List<String> creds = new ArrayList<>(10);
             for (AWSEBCredentials next : AWSEBCredentials.getCredentials()) {
                 creds.add(next.toString());
             }
-            return FormValidation.ok(CollectionUtils.flattenToString(creds));
+            return FormValidation.ok(String.join(",", creds));
         }
 
         public FormValidation doLoadApplications(
@@ -254,7 +253,7 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
         }
 
         public List<AWSEBSetupDescriptor> getExtensionDescriptors() {
-            List<AWSEBSetupDescriptor> extensions = new ArrayList<AWSEBSetupDescriptor>(1);
+            List<AWSEBSetupDescriptor> extensions = new ArrayList<>(1);
             extensions.add(AWSEBS3Setup.DESCRIPTOR);
             return extensions;
         }
@@ -263,13 +262,13 @@ public class AWSEBElasticBeanstalkSetup extends AWSEBSetup {
             if (envLookup != null && envLookup.size() > 0) {
                 return envLookup;
             }
-            List<AWSEBSetup> lookup = new ArrayList<AWSEBSetup>(1);
+            List<AWSEBSetup> lookup = new ArrayList<>(1);
             lookup.add(new ByName(""));
             return lookup;
         }
 
         public List<AWSEBSetupDescriptor> getEnvironmentLookupDescriptors() {
-            List<AWSEBSetupDescriptor> envLookup = new ArrayList<AWSEBSetupDescriptor>(3);
+            List<AWSEBSetupDescriptor> envLookup = new ArrayList<>(3);
             envLookup.add(new ByName.DescriptorImpl());
             envLookup.add(new ByUrl.DescriptorImpl());
             return envLookup;

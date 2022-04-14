@@ -40,7 +40,7 @@ public class AWSEBBuilder extends AWSEBBuilderBackwardsCompatibility {
     public AWSEBBuilder(
             List<AWSEBElasticBeanstalkSetup> extensions) {
         super();
-        this.extensions = new DescribableList<AWSEBSetup, AWSEBSetupDescriptor>(
+        this.extensions = new DescribableList<>(
                 Saveable.NOOP,Util.fixNull(extensions));
     }
     
@@ -48,7 +48,7 @@ public class AWSEBBuilder extends AWSEBBuilderBackwardsCompatibility {
     
     public DescribableList<AWSEBSetup, AWSEBSetupDescriptor> getExtensions() {
         if (extensions == null) {
-            extensions = new DescribableList<AWSEBSetup, AWSEBSetupDescriptor>(Saveable.NOOP,Util.fixNull(extensions));
+            extensions = new DescribableList<>(Saveable.NOOP,Util.fixNull(extensions));
         }
         return extensions;
     }
@@ -102,7 +102,7 @@ public class AWSEBBuilder extends AWSEBBuilderBackwardsCompatibility {
         
         
         public List<AWSEBSetupDescriptor> getExtensionDescriptors() {
-            List<AWSEBSetupDescriptor> extensions = new ArrayList<AWSEBSetupDescriptor>(1);
+            List<AWSEBSetupDescriptor> extensions = new ArrayList<>(1);
             extensions.add(AWSEBElasticBeanstalkSetup.getDesc());
             return extensions;
         }

@@ -99,7 +99,7 @@ public class AWSEBS3Setup extends AWSEBSetup {
         }
 
         public List<AWSEBSetupDescriptor> getExtensionDescriptors() {
-            final List<AWSEBSetupDescriptor> extensions = new ArrayList<AWSEBSetupDescriptor>(1);
+            final List<AWSEBSetupDescriptor> extensions = new ArrayList<>(1);
             extensions.add(AWSEBS3Setup.DESCRIPTOR);
             return extensions;
         }

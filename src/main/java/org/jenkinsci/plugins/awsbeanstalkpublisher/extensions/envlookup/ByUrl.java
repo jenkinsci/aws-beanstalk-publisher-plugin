@@ -29,7 +29,7 @@ public class ByUrl extends AWSEBSetup implements EnvLookup {
 
     @DataBoundConstructor
     public ByUrl(String urlList) {
-        this.urlList = new ArrayList<String>();
+        this.urlList = new ArrayList<>();
         if (!StringUtils.isEmpty(urlList)) {
             for (String next : urlList.split("\n")) {
                 this.urlList.add(next.trim());
@@ -49,9 +49,9 @@ public class ByUrl extends AWSEBSetup implements EnvLookup {
 
         DescribeEnvironmentsResult result = awseb.describeEnvironments(request);
 
-        List<EnvironmentDescription> environments = new ArrayList<EnvironmentDescription>();
+        List<EnvironmentDescription> environments = new ArrayList<>();
 
-        List<String> resolvedUrls = new ArrayList<String>(urlList.size());
+        List<String> resolvedUrls = new ArrayList<>(urlList.size());
 
         for (String url : urlList) {
             resolvedUrls.add(AWSEBUtils.replaceMacros(build, listener, url));

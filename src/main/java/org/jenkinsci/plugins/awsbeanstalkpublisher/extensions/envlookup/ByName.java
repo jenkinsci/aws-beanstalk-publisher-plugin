@@ -28,7 +28,7 @@ public class ByName extends AWSEBSetup implements EnvLookup {
 
     @DataBoundConstructor
     public ByName(String envNameList) {
-        this.envNameList = new ArrayList<String>();
+        this.envNameList = new ArrayList<>();
         if (!StringUtils.isEmpty(envNameList)) {
             for (String next : envNameList.split("\n")) {
                 this.envNameList.add(next.trim());
@@ -46,7 +46,7 @@ public class ByName extends AWSEBSetup implements EnvLookup {
         request.withApplicationName(applicationName);
         request.withIncludeDeleted(false);
         
-        List<String> escaped = new ArrayList<String>(envNameList.size());
+        List<String> escaped = new ArrayList<>(envNameList.size());
         for (String env : envNameList) {
             escaped.add(AWSEBUtils.replaceMacros(build, listener, env));
         }

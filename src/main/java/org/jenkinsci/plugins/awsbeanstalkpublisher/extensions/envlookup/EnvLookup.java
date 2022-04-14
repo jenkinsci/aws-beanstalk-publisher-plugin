@@ -10,6 +10,6 @@ import com.amazonaws.services.elasticbeanstalk.model.EnvironmentDescription;
 
 public interface EnvLookup {
     
-    public List<EnvironmentDescription> getEnvironments(AbstractBuild<?, ?> build, BuildListener listener, AWSElasticBeanstalk awseb, String applicationName);
+    List<EnvironmentDescription> getEnvironments(AbstractBuild<?, ?> build, BuildListener listener, AWSElasticBeanstalk awseb, String applicationName);
 
 }

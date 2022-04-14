@@ -30,7 +30,7 @@ public class AWSEBCredentials extends AbstractDescribableImpl<AWSEBCredentials> 
     private final String awsAccessKeyId;
     private final String awsSecretSharedKey;
 
-    private final static Set<AWSEBCredentials> credentials = new HashSet<AWSEBCredentials>();
+    private final static Set<AWSEBCredentials> credentials = new HashSet<>();
 
     public String getName() {
         return name;
