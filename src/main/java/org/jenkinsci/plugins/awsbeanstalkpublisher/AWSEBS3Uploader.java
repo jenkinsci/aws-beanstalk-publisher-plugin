@@ -9,8 +9,6 @@ import com.amazonaws.services.s3.S3ClientOptions;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.GetBucketAccelerateConfigurationRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Stopwatch;
 import hudson.FilePath;
 import hudson.model.AbstractBuild;
 import hudson.model.BuildListener;
@@ -20,6 +18,7 @@ import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBElasticBeanst
 import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBS3Setup;
 
 import java.io.*;
+import java.util.concurrent.TimeUnit;
 
 public class AWSEBS3Uploader {
 
@@ -126,17 +125,17 @@ public class AWSEBS3Uploader {
         }
 
         if (uploadFile) {
-            final Stopwatch sw = new Stopwatch();
-            sw.start();
+            long startTimeNanos = System.nanoTime();
             s3.putObject(bucketName, objectKey, localArchive);
-            sw.stop();
-            AWSEBUtils.log(listener, "Upload took " + sw.toString());
+            long finishTimeNanos = System.nanoTime();
+            long timeElapsedMillis = TimeUnit.MILLISECONDS.convert(finishTimeNanos - startTimeNanos, TimeUnit.NANOSECONDS);
+            AWSEBUtils.log(listener, "Upload took " + timeElapsedMillis + " milliseconds");
         }
         localArchive.delete();
         createApplicationVersion(awseb);
     }
 
-    @VisibleForTesting
+    // Visible for testing
     void setS3(AmazonS3 s3) {
         this.s3 = s3;
     }
