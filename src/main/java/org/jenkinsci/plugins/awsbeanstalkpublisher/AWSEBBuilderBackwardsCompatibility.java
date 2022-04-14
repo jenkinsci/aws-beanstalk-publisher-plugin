@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
 public abstract class AWSEBBuilderBackwardsCompatibility extends Builder implements BuildStep {
 
     abstract DescribableList<AWSEBSetup, AWSEBSetupDescriptor> getExtensions();
@@ -26,9 +24,9 @@ public abstract class AWSEBBuilderBackwardsCompatibility extends Builder impleme
 
     protected void readBackExtensionsFromLegacy() {
         try {
-            if (isNotBlank(applicationName) || (environments != null && environments.size() > 0) || isNotBlank(versionLabelFormat)) {
-                List<AWSEBSetup> s3Setup = new ArrayList<AWSEBSetup>(1);
-                if (isNotBlank(bucketName) || isNotBlank(keyPrefix)) {
+            if (StringUtils.isNotBlank(applicationName) || (environments != null && environments.size() > 0) || StringUtils.isNotBlank(versionLabelFormat)) {
+                List<AWSEBSetup> s3Setup = new ArrayList<>(1);
+                if (StringUtils.isNotBlank(bucketName) || StringUtils.isNotBlank(keyPrefix)) {
                     s3Setup.add(new AWSEBS3Setup(bucketName, awsRegion.getName(), keyPrefix,
                             rootObject, includes, excludes, overwriteExistingFile, useTransferAcceleration));
                     bucketName = null;
@@ -41,7 +39,7 @@ public abstract class AWSEBBuilderBackwardsCompatibility extends Builder impleme
                 if (credentials != null ){
                     credentialsName = credentials.getDisplayName();
                 }
-                List<AWSEBSetup> envLookup = new ArrayList<AWSEBSetup>(2);
+                List<AWSEBSetup> envLookup = new ArrayList<>(2);
                 ByName byName = new ByName(StringUtils.join(environments, '\n'));
                 envLookup.add(byName);
                 addIfMissing(new AWSEBElasticBeanstalkSetup(awsRegion, "", credentialsName, "",

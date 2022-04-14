@@ -17,7 +17,10 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBElasticBeanstalkSetup;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBS3Setup;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class AWSEBS3Uploader {
@@ -107,8 +110,6 @@ public class AWSEBS3Uploader {
             } else {
                 throw s3e;
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace(listener.getLogger());
         } catch (IOException e) {
             e.printStackTrace(listener.getLogger());
         }

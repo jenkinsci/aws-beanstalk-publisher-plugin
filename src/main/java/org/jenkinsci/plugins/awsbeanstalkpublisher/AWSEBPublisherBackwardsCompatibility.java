@@ -1,6 +1,5 @@
 package org.jenkinsci.plugins.awsbeanstalkpublisher;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
 import hudson.tasks.Recorder;
 import hudson.util.DescribableList;
 
@@ -17,16 +16,15 @@ import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBSetupDescript
 
 import com.amazonaws.regions.Regions;
 
-@SuppressWarnings("unchecked")
 public abstract class AWSEBPublisherBackwardsCompatibility  extends Recorder {
 
     public abstract DescribableList<AWSEBSetup, AWSEBSetupDescriptor> getExtensions();
 
     protected void readBackExtensionsFromLegacy() {
         try {
-            if (isNotBlank(applicationName) || (environments != null && environments.size() > 0) || isNotBlank(versionLabelFormat)) {
-                List<AWSEBSetup> s3Setup = new ArrayList<AWSEBSetup>(2);
-                if (isNotBlank(bucketName) || isNotBlank(keyPrefix)) {
+            if (StringUtils.isNotBlank(applicationName) || (environments != null && environments.size() > 0) || StringUtils.isNotBlank(versionLabelFormat)) {
+                List<AWSEBSetup> s3Setup = new ArrayList<>(2);
+                if (StringUtils.isNotBlank(bucketName) || StringUtils.isNotBlank(keyPrefix)) {
                     s3Setup.add(new AWSEBS3Setup(bucketName, awsRegion.getName(), keyPrefix,
                             rootObject, includes, excludes, overwriteExistingFile, useTransferAcceleration));
                     bucketName = null;
@@ -39,7 +37,7 @@ public abstract class AWSEBPublisherBackwardsCompatibility  extends Recorder {
                 if (credentials != null ){
                     credentialsName = credentials.getDisplayName();
                 }
-                List<AWSEBSetup> envLookup = new ArrayList<AWSEBSetup>(2);
+                List<AWSEBSetup> envLookup = new ArrayList<>(2);
                 ByName byName = new ByName(StringUtils.join(environments, '\n'));
                 envLookup.add(byName);
                 addIfMissing(new AWSEBElasticBeanstalkSetup(awsRegion, "", credentialsName, "",

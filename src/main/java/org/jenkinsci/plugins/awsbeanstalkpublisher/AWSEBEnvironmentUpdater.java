@@ -72,7 +72,7 @@ public class AWSEBEnvironmentUpdater {
     
 
     public boolean updateEnvironments() throws InterruptedException {
-        List<EnvironmentDescription> envList = new ArrayList<EnvironmentDescription>(10); 
+        List<EnvironmentDescription> envList = new ArrayList<>(10);
         
         for (AWSEBSetup extension : envSetup.getEnvLookup()) {
             if (extension instanceof EnvLookup){
@@ -95,7 +95,7 @@ public class AWSEBEnvironmentUpdater {
 
         ExecutorService pool = Executors.newFixedThreadPool(MAX_THREAD_COUNT);
 
-        List<AWSEBEnvironmentUpdaterThread> updaters = new ArrayList<AWSEBEnvironmentUpdaterThread>();
+        List<AWSEBEnvironmentUpdaterThread> updaters = new ArrayList<>();
         for (EnvironmentDescription envd : envList) {
             AWSEBUtils.log(listener, "Environment found (environment id='%s', name='%s'). "
                     + "Attempting to update environment to version label '%s'", 

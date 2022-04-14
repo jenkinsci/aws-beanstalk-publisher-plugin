@@ -39,7 +39,7 @@ public class AWSEBUtils {
     }
 
     public static List<String> getValue(AbstractBuild<?, ?> build, BuildListener listener, List<String> values) {
-        List<String> newValues = new ArrayList<String>(values.size());
+        List<String> newValues = new ArrayList<>(values.size());
         for (String value : values) {
             if (!value.isEmpty()) {
                 newValues.add(getValue(build, listener, value));
@@ -84,7 +84,7 @@ public class AWSEBUtils {
     }
 
     public static List<String> getBadEnvironmentNames(String environments) {
-        List<String> badEnv = new ArrayList<String>();
+        List<String> badEnv = new ArrayList<>();
         if (environments != null && !environments.isEmpty()) {
 
             for (String env : environments.split("\n")) {
@@ -119,7 +119,7 @@ public class AWSEBUtils {
         String returnString = inputString;
         if (build != null && inputString != null) {
             try {
-                Map<String, String> messageEnvVars = new HashMap<String, String>();
+                Map<String, String> messageEnvVars = new HashMap<>();
 
                 messageEnvVars.putAll(build.getCharacteristicEnvVars());
                 messageEnvVars.putAll(build.getBuildVariables());
