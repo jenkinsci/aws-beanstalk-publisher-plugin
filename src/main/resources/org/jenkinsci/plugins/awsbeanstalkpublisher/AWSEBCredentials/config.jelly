@@ -8,7 +8,7 @@
     <f:textbox/>
   </f:entry>
 
-  <f:entry title="AWS Secret Shared Key" field="awsSecretSharedKey">
+  <f:entry title="AWS Secret Access Key" field="awsSecretSharedKey">
     <f:password/>
   </f:entry>
 
