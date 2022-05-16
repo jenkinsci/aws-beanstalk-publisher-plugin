@@ -59,7 +59,7 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins.aws-java-sdk</groupId>
             <artifactId>aws-java-sdk-minimal</artifactId>
-            <version>1.12.163-315.v2b_716ec8e4df</version>
+            <version>1.12.215-339.vdc07efc5320c</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
