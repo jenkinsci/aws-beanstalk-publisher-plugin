@@ -54,7 +54,7 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins.aws-java-sdk</groupId>
             <artifactId>aws-java-sdk-elasticbeanstalk</artifactId>
-            <version>1.12.163-315.v2b_716ec8e4df</version>
+            <version>1.12.246-349.v96b_b_f7eb_a_c3c</version>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.aws-java-sdk</groupId>
