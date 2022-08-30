@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>4.40</version>
+        <version>4.47</version>
         <relativePath />
     </parent>
     <artifactId>aws-beanstalk-publisher-plugin</artifactId>
@@ -44,7 +44,7 @@
             <dependency>
                 <groupId>io.jenkins.tools.bom</groupId>
                 <artifactId>bom-2.332.x</artifactId>
-                <version>1595.v8c71c13cc3a_9</version>
+                <version>1607.va_c1576527071</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins.aws-java-sdk</groupId>
             <artifactId>aws-java-sdk-minimal</artifactId>
-            <version>1.12.163-315.v2b_716ec8e4df</version>
+            <version>1.12.287-357.vf82d85a_6eefd</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
