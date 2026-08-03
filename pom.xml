@@ -52,6 +52,10 @@
     </dependencyManagement>
     <dependencies>
         <dependency>
+            <groupId>io.jenkins.plugins</groupId>
+            <artifactId>commons-lang3-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jenkins-ci.plugins.aws-java-sdk</groupId>
             <artifactId>aws-java-sdk-elasticbeanstalk</artifactId>
             <version>1.12.287-357.vf82d85a_6eefd</version>
