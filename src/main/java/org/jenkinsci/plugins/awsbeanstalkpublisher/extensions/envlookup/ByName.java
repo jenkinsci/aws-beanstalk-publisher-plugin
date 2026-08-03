@@ -8,7 +8,7 @@ import hudson.util.FormValidation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.AWSEBCredentials;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.AWSEBUtils;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBSetup;

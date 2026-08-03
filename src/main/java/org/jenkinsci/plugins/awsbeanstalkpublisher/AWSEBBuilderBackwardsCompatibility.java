@@ -4,7 +4,7 @@ import com.amazonaws.regions.Regions;
 import hudson.tasks.BuildStep;
 import hudson.tasks.Builder;
 import hudson.util.DescribableList;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBElasticBeanstalkSetup;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBS3Setup;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.extensions.AWSEBSetup;

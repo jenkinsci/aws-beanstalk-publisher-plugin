@@ -10,7 +10,7 @@ import hudson.model.Saveable;
 import hudson.util.DescribableList;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.AWSEBCredentials;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.AWSEBEnvironmentUpdater;
 import org.jenkinsci.plugins.awsbeanstalkpublisher.AWSEBUtils;
